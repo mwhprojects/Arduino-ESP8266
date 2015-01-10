@@ -2,6 +2,9 @@
 Using an Arduino to get values from a DHT22 temperature and humidity sensor and a photo resistor, and a ESP8266 wifi module to send the data to Thing Speak.
 
 I used these guides to get started:
+
 http://www.instructables.com/id/ESP8266-Wifi-Temperature-Logger/?ALLSTEPS
+
 http://randomnerdtutorials.com/getting-started-with-esp8266-wifi-transceiver-review/
+
 http://mcuoneclipse.com/2014/12/14/tutorial-iot-datalogger-with-esp8266-wifi-module-and-frdm-kl25z/
