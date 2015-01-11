@@ -8,6 +8,7 @@ Base code with Arduino, ESP8266, DHT22, and LDR.
 ### ThingSpeak_DHT22_LCD_public.ino
 Adds an LCD to the base code. LCD displays values and a countdown to when data will be sent through ESP8266.
 
+# Guides
 I used these guides to get started:<br/>
 http://www.instructables.com/id/ESP8266-Wifi-Temperature-Logger/?ALLSTEPS<br/>
 http://randomnerdtutorials.com/getting-started-with-esp8266-wifi-transceiver-review/<br/>
