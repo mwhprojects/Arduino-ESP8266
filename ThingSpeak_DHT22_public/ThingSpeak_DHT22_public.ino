@@ -1,3 +1,9 @@
+/********************************************
+	This code collects readings from a DHT22 temperature and humidity sensor (requires DHT library) and a photoresistor (aka light dependent resistor, or "LDR"), then sends the data to Thing Speak using an ESP8266 module.
+	
+	GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266-DHT22
+********************************************/
+
 // Set up DHT22 library.
 #include "DHT.h"
 #define DHTPIN A1

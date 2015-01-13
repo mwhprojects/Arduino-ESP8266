@@ -1,3 +1,9 @@
+/********************************************
+	This code collects readings from a DHT22 temperature and humidity sensor (requires DHT library) and a photoresistor (aka light dependent resistor, or "LDR"), then sends the data to Thing Speak using an ESP8266 module. The values from the sensors and a countdown to when the data will be sent are displayed on an LCD (requires LiquidCrystal library).
+	
+	GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266-DHT22
+********************************************/
+
 // Set up LCD library.
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
