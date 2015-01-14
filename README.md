@@ -2,10 +2,10 @@
 Using an Arduino to get values from a DHT22 temperature and humidity sensor and a photo resistor, and a ESP8266 wifi module to send the data to Thing Speak.
 
 # Files
-### ThingSpeak_DHT22_public/ThingSpeak_DHT22_public.ino
+### ThingSpeak_DHT22_public.ino
 Base code with Arduino, ESP8266, DHT22, and LDR.
 
-### ThingSpeak_DHT22_LCD_public/ThingSpeak_DHT22_LCD_public.ino
+### ThingSpeak_DHT22_LCD_public.ino
 Adds an LCD to the base code. LCD displays values and a countdown to when data will be sent through ESP8266.
 
 # Guides
