@@ -13,6 +13,7 @@
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define LCDLIGHT 6    // Backlight pin
 #define LCDLIGHTSW 7  // Backlight enable switch
+int LCDLIGHTSWstate = 0;
 
 // Set up DHT22 library.
 #include "DHT.h"
@@ -81,7 +82,8 @@ void LCDerrorfade(){
 
 void loop(){
   // LCD backlight switch
-  if(digitalRead(LCDLIGHTSW)==HIGH){
+  LCDLIGHTSWstate = digitalRead(LCDLIGHTSW);
+  if(LCDLIGHTSWstate == HIGH){
     analogWrite(LCDLIGHT, 255);
   }else{
     analogWrite(LCDLIGHT, 0);
@@ -97,75 +99,85 @@ void loop(){
       lcd.print("ERROR: DHT22");
       lcd.setCursor(0, 1);
       lcd.print("Check connection");
-      LCDerrorfade();
+      if(LCDLIGHTSWstate == HIGH){
+        LCDerrorfade();
+      }else{
+        delay(4000);
+      }
     }
     else{
       // ESP8266 error
       lcd.print("ERROR: ESP8266");
       lcd.setCursor(0, 1);
       lcd.print("Check connection");
-      LCDerrorfade();
+      if(LCDLIGHTSWstate == HIGH){
+        LCDerrorfade();
+      }else{
+        delay(4000);
+      }
     }
-  }
-
-  // Get sensor readings.
-  brightness = analogRead(A0);			// Get LDR reading
-  float t = dht.readTemperature();		// Get temperature (in C) from DHT22 sensor
-  float h = dht.readHumidity();			// Get humidity (in %) from DHT22 sensor
-
-  // If there is an error with the DHT22 sensor readings, send obvious bad reading.
-  if (isnan(h) || isnan(t)) {
-    t = -99;
-    h = -99;
-    errortype = 0;  // Sets appropriate error message.
-    errorcount = 1;   // Increase error counter.
-    return;
-  }
-  // First line of LCD.
-  lcd.setCursor(0, 0);
-  if(displaytrack==1){
-    lcd.print("Temp: ");
-    lcd.print(t);
-    lcd.print((char)223);
-    lcd.print("C     ");
-    displaytracktime++;
-    if(displaytracktime == 5){
-      displaytracktime = 0;
-      displaytrack = 2;
+    
+    triggersend = 0;    // Reset timer.
+  }else{
+    // Get sensor readings.
+    brightness = analogRead(A0);			// Get LDR reading
+    float t = dht.readTemperature();		// Get temperature (in C) from DHT22 sensor
+    float h = dht.readHumidity();			// Get humidity (in %) from DHT22 sensor
+  
+    // If there is an error with the DHT22 sensor readings, send obvious bad reading.
+    if (isnan(h) || isnan(t)) {
+      t = -99;
+      h = -99;
+      errortype = 0;  // Sets appropriate error message.
+      errorcount = 1;   // Increase error counter.
+      return;
     }
-  }
-  else if(displaytrack==2){
-    lcd.print("Hum: ");
-    lcd.print(h);
-    lcd.print("%     ");
-    displaytracktime++;
-    if(displaytracktime == 5){
-      displaytracktime = 0;
-      displaytrack = 3;
+    // First line of LCD.
+    lcd.setCursor(0, 0);
+    if(displaytrack==1){
+      lcd.print("Temp: ");
+      lcd.print(t);
+      lcd.print((char)223);
+      lcd.print("C     ");
+      displaytracktime++;
+      if(displaytracktime == 5){
+        displaytracktime = 0;
+        displaytrack = 2;
+      }
     }
-  }
-  else if(displaytrack==3){
-    lcd.print("Lum: ");
-    lcd.print(brightness);
-    lcd.print("/1024     ");
-    displaytracktime++;
-    if(displaytracktime == 5){
-      displaytracktime = 0;
-      displaytrack = 1;
+    else if(displaytrack==2){
+      lcd.print("Hum: ");
+      lcd.print(h);
+      lcd.print("%     ");
+      displaytracktime++;
+      if(displaytracktime == 5){
+        displaytracktime = 0;
+        displaytrack = 3;
+      }
     }
-  }
-  // Second line of LCD.
-  lcd.setCursor(0, 1);
-  lcd.print("Send in: ");
-  lcd.print(120-triggersend);
-  lcd.print("secs  ");
-  delay(1000);
-  triggersend++;
-
-  // After 120 seconds, or 2 minutes, elapse, send the data through ESP8266.
-  if(triggersend == 120){
-    sendData(String(brightness), String(t), String(h));	// Call function to send data to Thing Speak.
-    triggersend = 0;
+    else if(displaytrack==3){
+      lcd.print("Lum: ");
+      lcd.print(brightness);
+      lcd.print("/1024     ");
+      displaytracktime++;
+      if(displaytracktime == 5){
+        displaytracktime = 0;
+        displaytrack = 1;
+      }
+    }
+    // Second line of LCD.
+    lcd.setCursor(0, 1);
+    lcd.print("Send in: ");
+    lcd.print(120-triggersend);
+    lcd.print("secs  ");
+    delay(1000);
+    triggersend++;
+  
+    // After 120 seconds, or 2 minutes, elapse, send the data through ESP8266.
+    if(triggersend == 120){
+      sendData(String(brightness), String(t), String(h));	// Call function to send data to Thing Speak.
+      triggersend = 0;
+    }
   }
 }
 
@@ -222,5 +234,7 @@ boolean connectWiFi(){
     return false;
   }
 }
+
+
 
 
