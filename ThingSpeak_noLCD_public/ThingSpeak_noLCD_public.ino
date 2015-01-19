@@ -1,8 +1,8 @@
 /********************************************
-	This code collects readings from a DHT22 temperature and humidity sensor (requires DHT library) and a photoresistor (aka light dependent resistor, or "LDR"), then sends the data to Thing Speak using an ESP8266 module.
-	
-	GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266-DHT22
-********************************************/
+ * This code collects readings from a DHT22 temperature and humidity sensor (requires DHT library) and a photoresistor (aka light dependent resistor, or "LDR"), then sends the data to Thing Speak using an ESP8266 module.
+ * 	
+ * GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266
+ ********************************************/
 
 // Set up DHT22 library.
 #include "DHT.h"
@@ -20,7 +20,7 @@ void setup()
 {
   dht.begin();	// DHT22
   pinMode(A0, INPUT);	// LDR
-  
+
   Serial.begin(9600);
   Serial.println("AT");
   delay(5000);
@@ -35,15 +35,15 @@ void loop(){
   brightness = analogRead(A0);			// Get LDR reading
   float t = dht.readTemperature();		// Get temperature (in C) from DHT22 sensor
   float h = dht.readHumidity();			// Get humidity (in %) from DHT22 sensor
-  
+
   // If there is an error with the DHT22 sensor readings, send obvious bad reading.
   if (isnan(h) || isnan(t)) {
     t = -99;
     h = -99;
     return;
   }
-  
-  
+
+
   sendData(String(brightness), String(t), String(h));	// Call function to send data to Thing Speak.
   delay(120000);	// Send data every 2 minutes.
 }
@@ -58,7 +58,7 @@ void sendData(String tBrightness, String tTemp, String tHum){
   if(Serial.find("Error")){
     return;
   }
-  
+
   // Send data.
   cmd = "GET /update?key=";
   cmd += TSKEY;
@@ -73,12 +73,13 @@ void sendData(String tBrightness, String tTemp, String tHum){
   Serial.println(cmd.length());
   if(Serial.find(">")){
     Serial.print(cmd);
-  }else{
+  }
+  else{
     Serial.println("AT+CIPCLOSE");
   }
 }
 
- 
+
 boolean connectWiFi(){
   Serial.println("AT+CWMODE=1");
   delay(2000);
@@ -91,7 +92,9 @@ boolean connectWiFi(){
   delay(5000);
   if(Serial.find("OK")){
     return true;
-  }else{
+  }
+  else{
     return false;
   }
 }
+

@@ -5,7 +5,7 @@
  * values from the sensors and a countdown to when the data will be sent are
  * displayed on an LCD (requires LiquidCrystal library).
  * 	
- * GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266-DHT22
+ * GitHub Repo: https://github.com/mwhprojects/Arduino-ESP8266
  ********************************************/
 
 // Set up LCD library and variables.
