@@ -15,7 +15,7 @@ Changes ThingSpeak_LCD_public to send data to a webhost where data is inserted i
 Combines ThingSpeak_LCD_public and PHPpage_LCD_public so that data is sent to both the MySQL database and Thing Speak.
 
 ### stats.php
-I got a request for PHP code that gets the averages, highs, and lows. This file contains that PHP code if you're interested.
+On the PHP Page Demo (link below), there are some statistics (averages, highs, lows) calculated by some PHP code. This file has that PHP code if you're interested.
 
 # Guides
 I used these guides to get started:<br/>
